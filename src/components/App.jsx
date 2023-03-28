@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import { nanoid } from 'nanoid';
 import Contactlist from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
+import Filter from './Filter/Filter';
 
 class App extends Component {
   state = {
@@ -12,11 +12,9 @@ class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
-  inputChange = ({ target: { name, value } }) => {
+  handleInputChange = ({ target: { name, value } }) => {
     this.setState(() => ({ [name]: value }));
   };
 
@@ -26,32 +24,22 @@ class App extends Component {
     );
   };
 
-  /* <div>
-    <h1>Phonebook</h1>
-    <ContactForm ... />
-  
-    <h2>Contacts</h2>
-    <Filter ... />
-    <ContactList ... />
-  </div> */
+  handleSubmit = obj => {
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, obj],
+    }));
+  };
 
   render() {
     return (
       <>
         <h1>Phonebook</h1>
-        <ContactForm />
+        <ContactForm onHandleSubmit={this.handleSubmit} />
         <h2>Contacts</h2>
-
-        <label>
-          Find contacts by name
-          <input
-            type="text"
-            name="filter"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            value={this.state.filter}
-            onChange={this.inputChange}
-          />
-        </label>
+        <Filter
+          filter={this.state.filter}
+          onHandleInputChange={this.handleInputChange}
+        />
         <Contactlist contacts={this.handleFilter()} />
       </>
     );
