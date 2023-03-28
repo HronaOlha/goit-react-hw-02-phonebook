@@ -25,6 +25,11 @@ class App extends Component {
   };
 
   handleSubmit = obj => {
+    const contactsName = this.state.contacts.map(contact => contact.name);
+    if (contactsName.includes(obj.name)) {
+      alert(`${obj.name} is already in contacts.`);
+      return;
+    }
     this.setState(prevState => ({
       contacts: [...prevState.contacts, obj],
     }));
